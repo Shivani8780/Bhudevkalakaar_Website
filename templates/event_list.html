@@ -1,0 +1,15 @@
+{% extends "index.html" %}
+{% block content %}
+<h1>Events</h1>
+<ul>
+  {% for event in events %}
+    <li>
+      <strong>{{ event.title }}</strong> - {{ event.date }} at {{ event.location }}
+      <p>{{ event.description }}</p>
+      {% if event.image %}
+        <img src="{{ event.image.url }}" alt="{{ event.title }}" width="200">
+      {% endif %}
+    </li>
+  {% endfor %}
+</ul>
+{% endblock %}

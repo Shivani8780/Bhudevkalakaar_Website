@@ -1,0 +1,263 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+    .gallery-caption-team {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        background: linear-gradient(90deg, #e0e7ff 0%, #6a11cb 100%);
+        color: #333;
+        font-size: 1.08em;
+        font-weight: bold;
+        text-align: center;
+        border-radius: 0 0 1rem 1rem;
+        box-shadow: 0 2px 8px rgba(106,17,203,0.08);
+        padding: 8px 0 6px 0;
+        margin: 0;
+        letter-spacing: 0.5px;
+        word-break: break-word;
+        text-shadow: 0 1px 4px rgba(106,17,203,0.10);
+        border-bottom: 2px solid #6a11cb22;
+    }
+    @media (max-width: 640px) {
+        .gallery-caption-team {
+            font-size: 0.98em;
+            padding: 5px 0 3px 0;
+            border-radius: 0 0 0.7rem 0.7rem;
+        }
+    }
+    @media (max-width: 480px) {
+        .gallery-caption-team {
+            font-size: 0.92em;
+            padding: 4px 0 2px 0;
+            border-radius: 0 0 0.5rem 0.5rem;
+        }
+    }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photos - Bhudev Kalakar</title>
+    <!-- Performance Optimizations -->
+    <link rel="preconnect" href="https://images.unsplash.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preload" href="{% static 'css/custom.css' %}" as="style">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" as="style">
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Image Preload for First Fold -->
+    <link rel="preload" as="image"
+        href="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&w=800&q=75">
+    <style>
+        /* Additional Photo Gallery Styles */
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 1.5rem;
+            padding: 1rem;
+        }
+
+        @media (min-width: 640px) {
+            .photo-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .photo-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .photo-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .photo-card:hover {
+            transform: scale(1.05);
+        }
+
+        .photo-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- New Modern Navbar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-content">
+                <!-- Logo -->
+                <a href="{% url 'index' %}" class="navbar-brand">
+                    <span>Bhudev Kalakar</span>
+                </a>
+
+                <!-- Desktop Navigation -->
+                <div class="navbar-links">
+                    <a href="{% url 'index' %}" class="nav-link">Home</a>
+                    <a href="{% url 'past-events' %}" class="nav-link">Past Events</a>
+                    <a href="{% url 'photos' %}" class="nav-link">Gallery</a>
+                    <a href="{% url 'participant-profile' %}" class="nav-link">Participants Profiles</a>
+                    <a href="{% url 'contact' %}" class="nav-link">Contact Us</a>
+                    <a href="{% url 'get-tickets' %}" class="nav-button">Get Tickets</a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button class="mobile-menu-button md:hidden" aria-controls="mobile-menu" aria-expanded="false">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16m-7 6h7"></path>
+                    </svg>
+                    <span class="sr-only">Toggle navigation</span>
+                </button>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div class="mobile-menu" id="mobile-menu" role="menu" aria-label="Mobile navigation">
+                <button type="button" class="mobile-menu-close" aria-label="Close menu">&times;</button>
+                <a href="{% url 'index' %}" role="menuitem" class="nav-link">Home</a>
+                <a href="{% url 'past-events' %}" role="menuitem" class="nav-link">Past Events</a>
+                <a href="{% url 'photos' %}" role="menuitem" class="nav-link">Gallery</a>
+                <a href="{% url 'participant-profile' %}" role="menuitem" class="nav-link">Participants Profiles</a>
+                <a href="{% url 'contact' %}" role="menuitem" class="nav-link">Contact Us</a>
+                <a href="{% url 'get-tickets' %}" role="menuitem" class="nav-link">Get Tickets</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Photos Content -->
+    <div class="container">
+        <div class="content-wrapper">
+            <h1 class="page-title">Photo Gallery</h1>
+            <div class="photo-grid">
+                {% for photo in photos %}
+                <div class="photo-card">
+                    <img src="{{ photo.image.url }}" alt="{{ photo.caption }}" class="photo-image" style="cursor:pointer;" onclick="openLightbox('{{ photo.image.url }}', '{{ photo.caption|escapejs }}')">
+                    {% if photo.caption %}
+                    <div class="gallery-caption-team">{{ photo.caption }}</div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+    <!-- Lightbox Modal -->
+    <div id="lightboxModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.8); z-index:9999; justify-content:center; align-items:center;">
+        <span onclick="closeLightbox()" style="position:absolute; top:30px; right:40px; color:#fff; font-size:2rem; cursor:pointer;">&times;</span>
+        <div style="display:flex; flex-direction:column; align-items:center;">
+            <img id="lightboxImg" src="" alt="" style="max-width:90vw; max-height:80vh; border-radius:1rem; box-shadow:0 8px 32px rgba(0,0,0,0.5);">
+            <div id="lightboxCaption" style="color:#fff; margin-top:1rem; font-size:1.2rem; text-align:center;"></div>
+        </div>
+    </div>
+    <script>
+    function openLightbox(imgUrl, caption) {
+        document.getElementById('lightboxImg').src = imgUrl;
+        document.getElementById('lightboxCaption').textContent = caption || '';
+        document.getElementById('lightboxModal').style.display = 'flex';
+    }
+    function closeLightbox() {
+        document.getElementById('lightboxModal').style.display = 'none';
+        document.getElementById('lightboxImg').src = '';
+        document.getElementById('lightboxCaption').textContent = '';
+    }
+    // Close modal when clicking outside image
+    document.getElementById('lightboxModal').addEventListener('click', function(e) {
+        if (e.target === this) closeLightbox();
+    });
+    </script>
+            </div>
+        </div>
+    </div>
+
+     <!-- Footer -->
+    <footer class="bg-gradient-to-t from-black/90 to-black/70 backdrop-blur-lg text-white border-t border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- About Section -->
+                <div class="col-span-1 md:col-span-2">
+                    <h3 class="text-2xl font-bold mb-4 text-white">Bhudev Kalakar</h3>
+                    <p class="text-white/80 mb-4 leading-relaxed">
+                        Celebrating the rich cultural heritage and artistic excellence of our community.
+                        Join us in promoting local talent and preserving traditional arts through
+                        spectacular events and performances.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-white/60 hover:text-white transition-colors duration-300">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="#" class="text-white/60 hover:text-white transition-colors duration-300">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-white/60 hover:text-white transition-colors duration-300">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-white/60 hover:text-white transition-colors duration-300">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4 text-white">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="{% url 'index' %}" class="text-white/60 hover:text-white transition-colors duration-300">Home</a></li>
+                        <li><a href="{% url 'past-events' %}" class="text-white/60 hover:text-white transition-colors duration-300">Past Events</a></li>
+                        <li><a href="{% url 'photos' %}" class="text-white/60 hover:text-white transition-colors duration-300">Gallery</a></li>
+                        <li><a href="{% url 'contact' %}" class="text-white/60 hover:text-white transition-colors duration-300">Contact Us</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Info -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4 text-white">Contact Info</h4>
+                    <div class="space-y-3">
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-envelope text-white/60"></i>
+                            <span class="text-white/80">bhudevnetwork@gmail.com</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-phone text-white/60"></i>
+                            <span class="text-white/80">+91 96627 66565</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-map-marker-alt text-white/60"></i>
+                            <span class="text-white/80">601, 602, 603, 604 A, 6th Floor<br>Galav Chambers, Dairy Den Circle, Sayajiganj
+                            Vadodara - 390020</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Section -->
+            <div class="border-t border-white/10 pt-8 mt-8">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <p class="text-white/60 text-sm">
+                        © <span id="current-year"></span> Bhudev Kalakar. All rights reserved.
+                    </p>
+                    <div class="flex items-center space-x-1 text-white/60 text-sm mt-4 md:mt-0">
+                        <span>Made with</span>
+                        <i class="fas fa-heart text-red-400"></i>
+                        <span>for cultural preservation</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+
+</html>

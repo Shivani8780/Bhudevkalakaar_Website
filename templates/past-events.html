@@ -1,0 +1,186 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Past Events - Bhudev Kalakar</title>
+    <!-- Performance Optimizations -->
+    <link rel="preconnect" href="https://images.unsplash.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preload" href="{% static 'css/custom.css' %}" as="style">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" as="style">
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Image Preload for First Fold -->
+    <link rel="preload" as="image"
+        href="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&w=800&q=75">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Playfair+Display:wght@700;900&display=swap"
+        rel="stylesheet">
+
+</head>
+
+<body>
+    <!-- New Modern Navbar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-content">
+                <!-- Logo -->
+                <a href="{% url 'index' %}" class="navbar-brand">
+                    <span>Bhudev Kalakar</span>
+                </a>
+
+                <!-- Desktop Navigation -->
+                <div class="navbar-links">
+                    <a href="{% url 'index' %}" class="nav-link">Home</a>
+                    <a href="{% url 'past-events' %}" class="nav-link">Past Events</a>
+                    <a href="{% url 'photos' %}" class="nav-link">Gallery</a>
+                    <a href="{% url 'participant-profile' %}" class="nav-link">Participants Profiles</a>
+                    <a href="{% url 'contact' %}" class="nav-link">Contact Us</a>
+                    <a href="{% url 'get-tickets' %}" class="nav-button">Get Tickets</a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button class="mobile-menu-button md:hidden" aria-controls="mobile-menu" aria-expanded="false">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16m-7 6h7"></path>
+                    </svg>
+                    <span class="sr-only">Toggle navigation</span>
+                </button>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="mobile-menu" role="menu" aria-label="Mobile navigation">
+                <button type="button" class="mobile-menu-close" aria-label="Close menu">&times;</button>
+                <a href="{% url 'index' %}" role="menuitem" class="nav-link">Home</a>
+                <a href="{% url 'past-events' %}" role="menuitem" class="nav-link">Past Events</a>
+                <a href="{% url 'photos' %}" role="menuitem" class="nav-link">Gallery</a>
+                <a href="{% url 'participant-profile' %}" role="menuitem" class="nav-link">Participants Profiles</a>
+                <a href="{% url 'contact' %}" role="menuitem" class="nav-link">Contact Us</a>
+                <a href="{% url 'get-tickets' %}" role="menuitem" class="nav-link">Get Tickets</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Past Events Content -->
+    <div class="container">
+        <div class="content-wrapper">
+            <h1 class="page-title">Past Events</h1>
+            <div class="grid">
+                {% for event in past_events %}
+                <div>
+                    <div class="event-card">
+                        <img src="{{ event.image.url }}" alt="{{ event.title }}" class="event-image">
+                        <div class="event-content">
+                            <h3 class="event-title">{{ event.title }}</h3>
+                            {# Removed description and date display as per request #}
+                            {# {% if event.description %} #}
+                            {# <p class="event-description">{{ event.description }}</p> #}
+                            {# {% endif %} #}
+                            {# <div class="event-date"> #}
+                            {#     <i class="fas fa-calendar-alt"></i> #}
+                            {#     <span>{{ event.date }}</span> #}
+                            {# </div> #}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gradient-to-t from-black/90 to-black/70 backdrop-blur-lg text-white border-t border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- About Section -->
+                <div class="col-span-1 md:col-span-2">
+                    <h3 class="text-2xl font-bold mb-4 text-white">Bhudev Kalakar</h3>
+                    <p class="text-white/80 mb-4 leading-relaxed">
+                        Celebrating the rich cultural heritage and artistic excellence of our community.
+                        Join us in promoting local talent and preserving traditional arts through
+                        spectacular events and performances.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-white/60 hover:text-white transition-colors duration-300">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="#" class="text-white/60 hover:text-white transition-colors duration-300">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-white/60 hover:text-white transition-colors duration-300">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-white/60 hover:text-white transition-colors duration-300">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                                                <!-- <img src="{% static 'img1.jpg' %}" alt="Event 1" class="event-image">
+                                                <img src="{% static 'img2.jpg' %}" alt="Event 2" class="event-image">
+                                                <img src="{% static 'img3.jpg' %}" alt="Event 3" class="event-image">
+                                                <img src="{% static 'img4.jpg' %}" alt="Event 4" class="event-image"> -->
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-white/60 hover:text-white transition-colors duration-300">Home</a>
+                        </li>
+                        <li><a href="#" class="text-white/60 hover:text-white transition-colors duration-300">Past
+                                Events</a></li>
+                        <li><a href="#"
+                                class="text-white/60 hover:text-white transition-colors duration-300">Gallery</a>
+                        </li>
+                        <li><a href="#" class="text-white/60 hover:text-white transition-colors duration-300">Contact
+                                Us</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Info -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4 text-white">Contact Info</h4>
+                    <div class="space-y-3">
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-envelope text-white/60"></i>
+                            <span class="text-white/80">bhudevnetwork@gmail.com</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-phone text-white/60"></i>
+                            <span class="text-white/80">+91 96627 66565</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-map-marker-alt text-white/60"></i>
+                            <span class="text-white/80">601, 602, 603, 604 A, 6th Floor<br>Galav Chambers, Dairy Den Circle, Sayajiganj
+                                Vadodara - 390020</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Section -->
+            <div class="border-t border-white/10 pt-8 mt-8">
+                <div class="flex flex-col items-center text-center">
+                    <p class="text-white/60 text-sm mb-4">
+                        © <span id="current-year"></span> Bhudev Kalakar. All rights reserved.
+                    </p>
+                    <div class="flex items-center space-x-1 text-white/60 text-sm">
+                        <span>Made with</span>
+                        <i class="fas fa-heart text-red-400"></i>
+                        <span>for cultural preservation</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+
+</html>

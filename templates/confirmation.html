@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-lg p-4 text-center">
+        <h2 class="mb-3 text-success"><i class="bi bi-check-circle-fill"></i> Registration Successful!</h2>
+        <p class="lead">Thank you for registering for the event. Your submission has been received.</p>
+        <p class="mb-4">We will contact you soon with further details.</p>
+        <a href="{% url 'index' %}" class="btn btn-primary">Go to Home</a>
+        <a href="{% url 'get-tickets' %}" class="btn btn-outline-secondary ms-2">Get Tickets</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "index.html" %}
+{% block content %}
+<h1>Participants</h1>
+<ul>
+  {% for participant in participants %}
+    <li>
+      <strong>{{ participant.name }}</strong> - {{ participant.event.title }}<br>
+      Email: {{ participant.email }}<br>
+      Phone: {{ participant.phone }}<br>
+      Registered: {{ participant.registered_at }}
+    </li>
+  {% endfor %}
+</ul>
+{% endblock %}
