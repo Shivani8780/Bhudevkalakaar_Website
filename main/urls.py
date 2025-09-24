@@ -16,4 +16,5 @@ urlpatterns = [
     path('confirmation/', views.confirmation, name='confirmation'),
     path('submit-contact/', views.submit_contact_form, name='submit_contact_form'),
     path('participants/profile/', views.participant_profile, name='participant-profile'),
+    path('info/', views.infopage, name='Infopage'),
 ]

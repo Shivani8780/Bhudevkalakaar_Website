@@ -1,3 +1,5 @@
+def infopage(request):
+	return render(request, 'Infopage.html')
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
@@ -99,27 +101,83 @@ def confirmation(request):
 
 def index(request):
 	homepage_images = HomePageImage.objects.all()
-	photos = Photo.objects.all().order_by('-uploaded_at')
+	photos_list = Photo.objects.all().order_by('-uploaded_at')
 	from .models import OtherPlaceEvent
 	other_events = OtherPlaceEvent.objects.filter(event_datetime__gte=timezone.now()).order_by('event_datetime')
+
+	# Pagination for photos
+	from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+	page = request.GET.get('page', 1)
+	paginator = Paginator(photos_list, 12)  # 12 photos per page
+	try:
+		photos = paginator.page(page)
+	except PageNotAnInteger:
+		photos = paginator.page(1)
+	except EmptyPage:
+		photos = paginator.page(paginator.num_pages)
+
 	return render(request, 'index.html', {
 		'homepage_images': homepage_images,
 		'photos': photos,
-		'other_events': other_events
+		'other_events': other_events,
+		'paginator': paginator,
+		'page_obj': photos,
 	})
     
 def participant_profile(request):
 	from .models import Participant
-	participants = Participant.objects.all()
-	return render(request, 'participants_profiles.html', {'participants': participants})
+	participants_list = Participant.objects.all()
+	from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+	page = request.GET.get('page', 1)
+	paginator = Paginator(participants_list, 12)  # 12 participants per page
+	try:
+		participants = paginator.page(page)
+	except PageNotAnInteger:
+		participants = paginator.page(1)
+	except EmptyPage:
+		participants = paginator.page(paginator.num_pages)
+
+	return render(request, 'participants_profiles.html', {
+		'participants': participants,
+		'paginator': paginator,
+		'page_obj': participants,
+	})
 
 def past_events(request):
-	past_events = PastEvent.objects.all().order_by('-id')
-	return render(request, 'past-events.html', {'past_events': past_events})
+	past_events_list = PastEvent.objects.all().order_by('-id')
+	from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+	page = request.GET.get('page', 1)
+	paginator = Paginator(past_events_list, 12)  # 12 events per page
+	try:
+		past_events = paginator.page(page)
+	except PageNotAnInteger:
+		past_events = paginator.page(1)
+	except EmptyPage:
+		past_events = paginator.page(paginator.num_pages)
+
+	return render(request, 'past-events.html', {
+		'past_events': past_events,
+		'paginator': paginator,
+		'page_obj': past_events,
+	})
 
 def photos(request):
-	photos = Photo.objects.all().order_by('-uploaded_at')
-	return render(request, 'photos.html', {'photos': photos})
+	photos_list = Photo.objects.all().order_by('-uploaded_at')
+	from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+	page = request.GET.get('page', 1)
+	paginator = Paginator(photos_list, 12)  # 12 photos per page
+	try:
+		photos = paginator.page(page)
+	except PageNotAnInteger:
+		photos = paginator.page(1)
+	except EmptyPage:
+		photos = paginator.page(paginator.num_pages)
+
+	return render(request, 'photos.html', {
+		'photos': photos,
+		'paginator': paginator,
+		'page_obj': photos,
+	})
 
 def contact(request):
 	return render(request, 'contact.html')

@@ -1,0 +1,654 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="gu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025 | Mega Talent Contest & Show</title>
+        <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+    <link rel="preload" href="{% static 'css/custom.css' %}" as="style">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-top: 30px;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header .subtitle {
+            font-size: 1.3em;
+            color: #e74c3c;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .emoji-decoration {
+            font-size: 2em;
+            margin: 10px 0;
+            animation: float-emoji 2.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes float-emoji {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-18px); }
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.95);
+            margin-bottom: 25px;
+            padding: 16px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            opacity: 0;
+            transform: translateY(40px);
+            animation: fadeInUp 1.1s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+            animation-delay: 0.2s;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        .section h2 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            text-align: center
+        }
+
+        .section h3 {
+            color: #e74c3c;
+            margin: 15px 0 10px 0;
+            font-size: 1.3em;
+        }
+
+        .awards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .award-card {
+            background: linear-gradient(135deg, #7894ff 0%, #980b0b 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.25s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.25s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .award-card:hover {
+            transform: scale(1.06) translateY(-8px);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.28);
+        }
+
+        .award-card h4 {
+            font-size: 1.4em;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .award-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .award-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .award-list li:before {
+            content: "✔️ ";
+            margin-right: 8px;
+        }
+
+        .steps-container {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+
+        .step {
+            background: white;
+            margin: 15px 0;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 5px solid #3498db;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .step-number {
+            color: #e74c3c;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .audition-schedule {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .audition-item {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .audition-item .date {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .audition-item .city {
+            font-size: 1.1em;
+            color: #f1c40f;
+        }
+
+        .whatsapp-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .whatsapp-link {
+            background: #25d366;
+            color: white;
+            padding: 12px 15px;
+            text-decoration: none;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .whatsapp-link:hover {
+            background: #128c7e;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .main-link {
+            background: #e74c3c;
+            color: white;
+            padding: 15px 25px;
+            text-decoration: none;
+            border-radius: 25px;
+            display: inline-block;
+            margin: 10px 0;
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .main-link:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+        }
+
+        .voting-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .voting-link {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .voting-link a {
+            color: #2c3e50;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .note-section {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid #f39c12;
+            margin: 20px 0;
+        }
+
+        .note-section h3 {
+            color: #d35400;
+            margin-bottom: 15px;
+        }
+
+        .history-section {
+            background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+
+        .youtube-link {
+            background: #ff0000;
+            color: white;
+            padding: 12px 20px;
+            text-decoration: none;
+            border-radius: 8px;
+            display: inline-block;
+            margin: 10px 0;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .youtube-link:hover {
+            background: #cc0000;
+            transform: translateY(-2px);
+        }
+
+        .separator {
+            text-align: center;
+            font-size: 1.5em;
+            color: #3498db;
+            margin: 15px 0;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .awards-grid,
+            .audition-schedule,
+            .whatsapp-links,
+            .voting-links {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-content">
+                <!-- Logo -->
+                <a href="{% url 'index' %}" class="navbar-brand">
+                    <span>Bhudev Kalakar</span>
+                </a>
+
+                <!-- Desktop Navigation -->
+                <div class="navbar-links">
+                    <a href="{% url 'index' %}" class="nav-link">Home</a>
+                    <a href="{% url 'past-events' %}" class="nav-link">Past Events</a>
+                    <a href="{% url 'photos' %}" class="nav-link">Gallery</a>
+                    <a href="{% url 'participant-profile' %}" class="nav-link">Participants Profiles</a>
+                    <a href="{% url 'Infopage' %}" class="nav-link">Info Page</a>
+                    <a href="{% url 'contact' %}" class="nav-link">Contact Us</a>
+                    <a href="{% url 'get-tickets' %}" class="nav-button">Get Tickets</a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button class="mobile-menu-button md:hidden" aria-controls="mobile-menu" aria-expanded="false">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16m-7 6h7"></path>
+                    </svg>
+                    <span class="sr-only">Toggle navigation</span>
+                </button>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div class="mobile-menu" id="mobile-menu" role="menu" aria-label="Mobile navigation">
+                <button type="button" class="mobile-menu-close" aria-label="Close menu">&times;</button>
+                <a href="{% url 'index' %}" role="menuitem" class="nav-link">Home</a>
+                <a href="{% url 'past-events' %}" role="menuitem" class="nav-link">Past Events</a>
+                <a href="{% url 'photos' %}" role="menuitem" class="nav-link">Gallery</a>
+                <a href="{% url 'participant-profile' %}" role="menuitem" class="nav-link">Participants Profiles</a>
+                <a href="{% url 'Infopage' %}" role="menuitem" class="nav-link">Info Page</a>
+                <a href="{% url 'contact' %}" role="menuitem" class="nav-link">Contact Us</a>
+                <a href="{% url 'get-tickets' %}" role="menuitem" class="nav-link">Get Tickets</a>
+            </div>
+        </div>
+    </nav>
+
+
+    <div class="container">
+        <!-- Header Section -->
+        <div class="header">
+          
+            <h1>Bhudev Kalakar All Info</h1>
+            <div class="subtitle">Mega Talent Contest & Show</div>
+        </div>
+
+        <!-- Main WhatsApp Group -->
+        <div class="section">
+            <h2>Free Talent Group (Main)</h2>
+            <div style="text-align: center;">
+                <a href="https://chat.whatsapp.com/KXI4QuCgixJ2E10hhbjdVC?mode=ems_copy_t" class="main-link" target="_blank">
+                    📱 Join Main WhatsApp Group
+                </a>
+            </div>
+        </div>
+
+        <!-- Certificate, Prizes & Awards Section -->
+        <div class="section">
+            <h2>Certificate, Prizes & Awards</h2>
+            
+            <div class="awards-grid">
+                <div class="award-card">
+                    <h4>(1) Audition Round</h4>
+                    <p style="margin-bottom: 15px; font-size: 0.9em;">
+                        ઓડિશન માટે જેમનું સિલેક્શન થશે, તેમને નીચે પ્રમાણે Awards & Prize મળશે.
+                    </p>
+                    <ul class="award-list">
+                        <li>Audition Certificate (Worth Rs 50 to each Participant, Signed by all Chief Judge Jury)</li>
+                        <li>2 Free Gift Audience Passes for Grand-Finale Show (Worth Rs 100) Free to each Audition Participant</li>
+                        <li>Free Discount & Cashback Vouchers (Worth Rs 500)</li>
+                    </ul>
+                </div>
+
+                <div class="award-card">
+                    <h4>(2) Semi-Finale Round</h4>
+                    <ul class="award-list">
+                        <li>Semi-Finale Certificate (Worth Rs 50 to each signed by all Chief Judge Jury)</li>
+                        <li>Momento-Trophy to each Semi-Finale Participant (Price-less, અનમોલ)</li>
+                        <li>Free 2 Audience Passes Gift for Grand-Finale Show (Worth Rs 100) Free</li>
+                        <li>Free Discount & Cashback Vouchers (Worth Rs 1500)</li>
+                    </ul>
+                </div>
+
+                <div class="award-card" style="grid-column: 1 / -1;">
+                    <h4>(3) Grand-Finale Awards & Prizes</h4>
+                        <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 8px; margin-top: 15px;">
+                            <h5 style="color: #fff; margin-bottom: 10px; text-align: center;">🏆 Main Awards</h5>
+                            <ul class="award-list" style="font-size: 0.9em;">
+                                <li>Gift Prize (item)</li>
+                                <li>Certificate</li>
+                                <li>Trophy</li>
+                            </ul>
+                        </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        
+        <!-- Auditions Schedule -->
+        <div class="section">
+            <h2>Auditions Schedule</h2>
+            
+            <div class="audition-schedule">
+                <div class="audition-item">
+                    <div class="date">05-10-2025 (Sunday)</div>
+                    <div class="city">📍 Vadodara</div>
+                </div>
+                <div class="audition-item">
+                    <div class="date">12-10-2025 (Sunday)</div>
+                    <div class="city">📍 Amdavad</div>
+                </div>
+                <div class="audition-item">
+                    <div class="date">02-11-2025 (Sunday)</div>
+                    <div class="city">📍 Surat</div>
+                </div>
+                <div class="audition-item">
+                    <div class="date">09-11-2025 (Sunday)</div>
+                    <div class="city">📍 Rajkot</div>
+                </div>
+            </div>
+
+            <div style="margin-top: 20px; padding: 15px; background: #ecf0f1; border-radius: 8px;">
+                <h3 style="color: #2c3e50;">Selection Process:</h3>
+                <p>Personal Auditions માટે, Judges દ્વારા Selected Participants ને 15/09/2025 પછી, ફોન થી જાણ કરવામાં આવશે. તેઓ Auditions મા રૂબરૂ આવશે. ઓડિશન એડ્રેસ, લોકેશન, સમય, વગેરે ની માહિતી હવે પછી અહીં મુકાશે.</p>
+            </div>
+
+            <div style="margin-top: 20px; padding: 15px; background: #e8f5e8; border-radius: 8px;">
+                <h3 style="color: #27ae60;">Other Cities Auditions:</h3>
+                <p>ઉપરોક્ત 4 City સિવાય, અન્ય જે City માંથી minimum 50 થી વધુ Registration Entries મળશે તે City મા પણ Audition નું આયોજન થશે.</p>
+                <p><strong>Eg:</strong> Mumbai, Jamnagar, Bhavnagar, Bhuj, Mehsana, Godhra, Valsad, Vapi, Vyara, Palanpur, Himmatnagar, Morbi, Surendranagar, Amreli, Dahod, Gir-Somnath, Bharuch, Ankleshwar, Patan, Siddhpur, વગેરે</p>
+            </div>
+        </div>
+        <br>
+
+        <!-- Process Steps Section -->
+        <div class="section">
+            <h2>Format અને Steps</h2>
+            
+            <div class="steps-container">
+                <div class="step">
+                    <div class="step-number">Step-1:</div>
+                    Registration પછી હવે, જે ભુદેવ કલાકાર નું જજીસ દવારા, પર્સનલ ઓડિશન Round માટેનું સિલેક્શન થશે, તેમને 25/09/2025 સુધી, ફોન થી જાણ કરવામાં આવશે. દરેક કલાકાર ને તેમનો Registration ID ફોન ઉપર આપવામાં આવશે.
+                </div>
+
+                <div class="step">
+                    <div class="step-number">Step-2:</div>
+                    પછી તેમને 4 City માંથી કોઈપણ એક city મા રૂબરૂ આવીને પોતાનું ઓડિશન આપવાનું રહેશે.
+                </div>
+
+                <div class="step">
+                    <div class="step-number">Step-3:</div>
+                    ઓડિશન મા જેમનું સિલેક્શન થશે, તેમને Semi-Finale મા જવાનો <strong>Silver-Pass</strong> મળી જશે.
+                </div>
+
+                <div class="step">
+                    <div class="step-number">Step-4:</div>
+                    ફાયનલી, જેમનું Semi-Finale round મા સિલેક્શન થશે તેમને Grand-Finale માટેનો <strong>Golden-Pass</strong> મળી જશે. અને Grand-Finale મા perform કરીને પછી Winner બનવાનો ચાન્સ મળશે.
+                </div>
+            </div>
+        </div>
+
+        <!-- Voting Section -->
+      
+
+
+       
+        <!-- History Section -->
+        <div class="history-section">
+            <h2>🏆 Previous Edition - 2019</h2>
+            <p><b>Oct-Nov 2019 મા, <strong>ભુદેવ કલાકાર</strong> - Talent Contest & Show નું 1st Edition Launch થયુ હતું. જેમાં કુલ 300+ ભુદેવ કલાકારો ઍ રેજીસ્ટ્રેશન કરીને ઉત્સાહભેર ભાગ લીધો હતો.</p>
+            <br>
+            <ul style="padding-left: 20px;">
+                <li>2019 મા રેજીસ્ટ્રેશન પછી 2 Audition આયોજિત થયાં હતા. Vadodara Auditions, અને Amdavad Auditions.</li>
+                <li>ભુદેવ કલાકાર Contest Auditions મા દરેક કલાકાર ને તેમના Performance પછી Participation Certificate Award મળશે.</li>
+            </ul>
+            <br>
+            <h3>🎬 Glimpses of Vadodara Auditions on 24/11/2019</h3>
+            <div style="text-align: center;">
+                <a href="https://youtu.be/MTwq2roXghU?si=HnkpurCk445GPLDk" class="youtube-link" target="_blank">
+                    🎥 Watch Vadodara Auditions Highlights 
+                </a>
+            </div></b>
+        </div>
+
+        <!-- Footer -->
+        <!-- <div style="text-align: center; padding: 30px; color: white; font-size: 1.1em;">
+            <div class="emoji-decoration">🎖️🎁🏆🎖️🎁🏆</div>
+            <p><strong>ભુદેવ કલાકાર - 2025</strong></p>
+            <p>Mega Talent Contest & Show</p>
+            <div class="emoji-decoration">🎖️🎁🏆🎖️🎁🏆</div>
+        </div> -->
+    </div>
+
+     <footer class="bg-gradient-to-t from-black/90 to-black/70 backdrop-blur-lg text-white border-t border-white/10">
+        <div class="mx-auto px-8 py-12" style="max-width:2000px;">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- About Section -->
+                <div class="col-span-1 md:col-span-2">
+                    <h3 class="text-2xl font-bold mb-4 text-white">Bhudev Kalakar</h3>
+                    <p class="text-white/80 mb-4 leading-relaxed">
+                        Celebrating the rich cultural heritage and artistic excellence of our community.
+                        Join us in promoting local talent and preserving traditional arts through
+                        spectacular events and performances.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-white/60 hover:text-white transition-colors duration-300">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="#" class="text-white/60 hover:text-white transition-colors duration-300">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-white/60 hover:text-white transition-colors duration-300">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-white/60 hover:text-white transition-colors duration-300">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4 text-white">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="{% url 'index' %}"
+                                class="text-white/60 hover:text-white transition-colors duration-300">Home</a></li>
+                        <li><a href="{% url 'past-events' %}"
+                                class="text-white/60 hover:text-white transition-colors duration-300">Past Events</a>
+                        </li>
+                        <li><a href="{% url 'photos' %}"
+                                class="text-white/60 hover:text-white transition-colors duration-300">Gallery</a></li>
+                        <li><a href="{% url 'contact' %}"
+                                class="text-white/60 hover:text-white transition-colors duration-300">Contact Us</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Contact Info -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4 text-white">Contact Info</h4>
+                    <div class="space-y-3">
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-envelope text-white/60"></i>
+                            <span class="text-white/80">bhudevnetwork@gmail.com</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-phone text-white/60"></i>
+                            <span class="text-white/80">+91 9662766565</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-map-marker-alt text-white/60"></i>
+                            <span class="text-white/80">601, 602, 603, 604 A, 6th Floor<br>Galav Chambers, Dairy Den Circle, Sayajiganj
+                                Vadodara - 390020</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Section -->
+            <div class="border-t border-white/10 pt-8 mt-8">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <p class="text-white/60 text-sm">
+                        © <span id="current-year"></span> Bhudev Kalakar. All rights reserved.
+                    </p>
+                    <div class="flex items-center space-x-1 text-white/60 text-sm mt-4 md:mt-0">
+                        <span>Made with</span>
+                        <i class="fas fa-heart text-red-400"></i>
+                        <span>for cultural preservation</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+
+
+    <script>
+    // Mobile menu toggle for Info Page (Contact page style)
+    document.addEventListener('DOMContentLoaded', function() {
+        // Animate all .section elements with staggered delay
+        var sections = document.querySelectorAll('.section');
+        sections.forEach(function(section, i) {
+            section.style.animationDelay = (0.2 + i * 0.15) + 's';
+        });
+
+        var menuButton = document.querySelector('.mobile-menu-button');
+        var mobileMenu = document.getElementById('mobile-menu');
+        var closeButton = document.querySelector('.mobile-menu-close');
+
+        if (menuButton && mobileMenu) {
+            menuButton.addEventListener('click', function(e) {
+                e.stopPropagation();
+                mobileMenu.classList.add('show');
+                document.body.classList.add('menu-open');
+            });
+        }
+        if (closeButton && mobileMenu) {
+            closeButton.addEventListener('click', function(e) {
+                e.stopPropagation();
+                mobileMenu.classList.remove('show');
+                document.body.classList.remove('menu-open');
+            });
+        }
+        // Hide menu on outside click
+        document.addEventListener('click', function(e) {
+            if (mobileMenu && mobileMenu.classList.contains('show') && !mobileMenu.contains(e.target) && !menuButton.contains(e.target)) {
+                mobileMenu.classList.remove('show');
+                document.body.classList.remove('menu-open');
+            }
+        });
+        // Hide menu on escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && mobileMenu && mobileMenu.classList.contains('show')) {
+                mobileMenu.classList.remove('show');
+                document.body.classList.remove('menu-open');
+            }
+        });
+    });
+    </script>
+
+</body>
+</html>

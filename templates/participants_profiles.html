@@ -88,27 +88,35 @@
             background: #94a3b8;
         }
 
-        /* Mobile navigation styles */
-        .mobile-dropdown {
+        /* Mobile menu styles (Info Page/Contact style) */
+        .mobile-menu {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
-            background: rgba(15, 23, 42, 0.95);
+            height: 100vh;
+            background: rgba(15, 23, 42, 0.97);
             backdrop-filter: blur(20px);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
             z-index: 9999;
-            transform: translateY(-100%);
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            padding: 30px 0 20px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding-top: 60px;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(-20px);
+            transition: opacity 0.3s, transform 0.3s;
         }
-        .mobile-dropdown.open {
+        .mobile-menu.show {
+            opacity: 1;
+            pointer-events: auto;
             transform: translateY(0);
         }
-        .mobile-dropdown .dropdown-close {
+        .mobile-menu .menu-close {
             position: absolute;
             top: 20px;
-            right: 20px;
+            right: 24px;
             font-size: 2rem;
             background: none;
             border: none;
@@ -116,17 +124,18 @@
             cursor: pointer;
             transition: color 0.3s;
         }
-        .mobile-dropdown .dropdown-close:hover {
+        .mobile-menu .menu-close:hover {
             color: #0ea5e9;
         }
-        .mobile-dropdown .dropdown-links {
-            margin-top: 60px;
+        .mobile-menu .menu-links {
             display: flex;
             flex-direction: column;
             gap: 0;
             align-items: center;
+            width: 100%;
+            margin-top: 40px;
         }
-        .mobile-dropdown .dropdown-link {
+        .mobile-menu .menu-link {
             font-size: 1.2rem;
             color: #e2e8f0;
             text-decoration: none;
@@ -138,16 +147,16 @@
             transition: all 0.3s ease;
             font-family: 'Inter', sans-serif;
         }
-        .mobile-dropdown .dropdown-link:hover,
-        .mobile-dropdown .dropdown-link:focus {
+        .mobile-menu .menu-link:hover,
+        .mobile-menu .menu-link:focus {
             color: #0ea5e9;
             background: rgba(14, 165, 233, 0.1);
             border-radius: 8px;
         }
-        .mobile-dropdown .dropdown-link:last-child {
+        .mobile-menu .menu-link:last-child {
             border-bottom: none;
         }
-        .mobile-dropdown .dropdown-link.nav-button {
+        .mobile-menu .menu-link.nav-button {
             background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
             color: #fff;
             border-radius: 12px;
@@ -158,35 +167,15 @@
             font-weight: 600;
             box-shadow: 0 10px 25px rgba(14, 165, 233, 0.3);
         }
-        .mobile-dropdown .dropdown-link.nav-button:hover {
+        .mobile-menu .menu-link.nav-button:hover {
             background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
             transform: translateY(-2px);
             box-shadow: 0 15px 35px rgba(14, 165, 233, 0.4);
         }
-
-        /* Overlay styles */
-        .drawer-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(15, 23, 42, 0.4);
-            backdrop-filter: blur(4px);
-            z-index: 9998;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-        .drawer-overlay.open {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        /* Hide mobile elements on desktop */
+        /* Hide mobile menu on desktop */
         @media (min-width: 769px) {
-            .mobile-dropdown,
-            .mobile-dropdown-toggle {
+            .mobile-menu,
+            .mobile-menu-toggle {
                 display: none !important;
             }
         }
@@ -949,8 +938,6 @@
 <body>
     <!-- Modern Navbar -->
     <nav class="navbar">
-        <!-- Mobile Dropdown Overlay -->
-        <div id="mobileDropdownOverlay" class="drawer-overlay" aria-hidden="true"></div>
         <div class="navbar-container">
             <div class="navbar-content">
                 <!-- Logo -->
@@ -963,26 +950,27 @@
                     <a href="{% url 'past-events' %}" class="nav-link">Past Events</a>
                     <a href="{% url 'photos' %}" class="nav-link">Gallery</a>
                     <a href="{% url 'participant-profile' %}" class="nav-link">Participants Profiles</a>
+                    <a href="{% url 'Infopage' %}" class="nav-link">Info Page</a>
                     <a href="{% url 'contact' %}" class="nav-link">Contact Us</a>
                     <a href="{% url 'get-tickets' %}" class="nav-button">Get Tickets</a>
                 </div>
                 <!-- Mobile Toggle Button -->
-                <button class="mobile-dropdown-toggle" aria-label="Open menu">
+                <button class="mobile-menu-toggle" aria-label="Open menu">
                     <i class="fas fa-bars"></i>
                 </button>
             </div>
         </div>
-        
-        <!-- Mobile Dropdown Menu -->
-        <div id="mobileDropdown" class="mobile-dropdown" role="menu" aria-label="Mobile navigation">
-            <button type="button" class="dropdown-close" aria-label="Close menu">&times;</button>
-            <div class="dropdown-links">
-                <a href="{% url 'index' %}" class="dropdown-link">Home</a>
-                <a href="{% url 'past-events' %}" class="dropdown-link">Past Events</a>
-                <a href="{% url 'photos' %}" class="dropdown-link">Gallery</a>
-                <a href="{% url 'participant-profile' %}" class="dropdown-link">Participants Profiles</a>
-                <a href="{% url 'contact' %}" class="dropdown-link">Contact Us</a>
-                <a href="{% url 'get-tickets' %}" class="dropdown-link nav-button">Get Tickets</a>
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="mobile-menu" role="menu" aria-label="Mobile navigation">
+            <button type="button" class="menu-close" aria-label="Close menu">&times;</button>
+            <div class="menu-links">
+                <a href="{% url 'index' %}" class="menu-link">Home</a>
+                <a href="{% url 'past-events' %}" class="menu-link">Past Events</a>
+                <a href="{% url 'photos' %}" class="menu-link">Gallery</a>
+                <a href="{% url 'participant-profile' %}" class="menu-link">Participants Profiles</a>
+                <a href="{% url 'Infopage' %}" class="menu-link">Info Page</a>
+                <a href="{% url 'contact' %}" class="menu-link">Contact Us</a>
+                <a href="{% url 'get-tickets' %}" class="menu-link nav-button">Get Tickets</a>
             </div>
         </div>
     </nav>
@@ -1065,11 +1053,9 @@
                     {% endif %}
                     <div class="image-overlay"></div>
                 </div>
-                
                 <div class="participant-content">
                     <h3 class="participant-name">{{ p.name }}</h3>
                     <span class="participant-category">{{ p.category }}</span>
-                    
                     <div class="participant-details">
                         {% if p.city %}
                         <div class="participant-city">
@@ -1081,8 +1067,6 @@
                         <div class="participant-age">{{ p.get_age_display }}</div>
                         {% endif %}
                     </div>
-                    
-                    <!-- Click to view more indicator -->
                     <div style="text-align: center; margin-top: 12px; opacity: 0.7;">
                         <i class="fas fa-eye"></i>
                         <span style="font-size: 0.8rem; margin-left: 4px;">Click to view details</span>
@@ -1090,6 +1074,32 @@
                 </div>
             </div>
             {% endfor %}
+        </div>
+        <!-- Pagination Controls -->
+        {% if paginator.num_pages > 1 %}
+        <div class="flex justify-center mt-8">
+            <nav class="inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                {% if participants.has_previous %}
+                    <a href="?page={{ participants.previous_page_number }}" class="relative inline-flex items-center px-3 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">Previous</a>
+                {% else %}
+                    <span class="relative inline-flex items-center px-3 py-2 rounded-l-md border border-gray-200 bg-gray-100 text-sm font-medium text-gray-400 cursor-not-allowed">Previous</span>
+                {% endif %}
+                {% load pagination_extras %}
+                {% for i in paginator.num_pages|get_range %}
+                    {% if participants.number == i %}
+                        <span class="z-10 bg-indigo-600 border-indigo-600 text-white relative inline-flex items-center px-3 py-2 border text-sm font-medium">{{ i }}</span>
+                    {% else %}
+                        <a href="?page={{ i }}" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-3 py-2 border text-sm font-medium">{{ i }}</a>
+                    {% endif %}
+                {% endfor %}
+                {% if participants.has_next %}
+                    <a href="?page={{ participants.next_page_number }}" class="relative inline-flex items-center px-3 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">Next</a>
+                {% else %}
+                    <span class="relative inline-flex items-center px-3 py-2 rounded-r-md border border-gray-200 bg-gray-100 text-sm font-medium text-gray-400 cursor-not-allowed">Next</span>
+                {% endif %}
+            </nav>
+        </div>
+        {% endif %}
         </div>
 
         <!-- Empty State -->
@@ -1157,10 +1167,9 @@
     <!-- Modern JavaScript -->
     <script>
         // DOM elements
-        const mobileDropdownToggle = document.querySelector('.mobile-dropdown-toggle');
-        const mobileDropdown = document.getElementById('mobileDropdown');
-        const dropdownClose = document.querySelector('.dropdown-close');
-        const mobileDropdownOverlay = document.getElementById('mobileDropdownOverlay');
+        const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const menuClose = document.querySelector('.menu-close');
         const searchInput = document.getElementById('searchInput');
         const categoryButtons = document.querySelectorAll('.category-btn');
         const ageSelect = document.getElementById('age-select');
@@ -1172,39 +1181,35 @@
         const totalCount = document.getElementById('totalCount');
         const participantCards = document.querySelectorAll('.participant-card');
 
-        // Mobile navigation
-        function openDropdown() {
-            mobileDropdown.classList.add('open');
-            mobileDropdownOverlay.classList.add('open');
-            document.body.style.overflow = 'hidden';
+        // Mobile navigation (Info Page/Contact style)
+        function openMobileMenu() {
+            mobileMenu.classList.add('show');
+            document.body.classList.add('menu-open');
         }
 
-        function closeDropdown() {
-            mobileDropdown.classList.remove('open');
-            mobileDropdownOverlay.classList.remove('open');
-            document.body.style.overflow = '';
+        function closeMobileMenu() {
+            mobileMenu.classList.remove('show');
+            document.body.classList.remove('menu-open');
         }
 
-        if (mobileDropdownToggle) {
-            mobileDropdownToggle.addEventListener('click', openDropdown);
+        if (mobileMenuToggle) {
+            mobileMenuToggle.addEventListener('click', openMobileMenu);
         }
 
-        if (dropdownClose) {
-            dropdownClose.addEventListener('click', closeDropdown);
-        }
-
-        if (mobileDropdownOverlay) {
-            mobileDropdownOverlay.addEventListener('click', closeDropdown);
+        if (menuClose) {
+            menuClose.addEventListener('click', closeMobileMenu);
         }
 
         // Close on escape key
         document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape' && mobileDropdown.classList.contains('open')) {
-                closeDropdown();
+            if (event.key === 'Escape' && mobileMenu.classList.contains('show')) {
+                closeMobileMenu();
             }
         });
 
-        // Filter functionality
+
+
+    // Filter functionality
         let allParticipants = Array.from(participantCards);
         
         function updateCityOptions() {

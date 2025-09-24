@@ -6,12 +6,18 @@ SECRET_KEY = 'django-insecure-rn#t@=jp5%4up41-v8h*-mmg81*m+kb06$zv9!qq^@x^#5zc^y
 
 DEBUG = True
 
+
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
     '79977cbb1ead.ngrok-free.app',
     'bhudevkalakar-bhudevnetwork.pythonanywhere.com',
 ]
+
+
+
+
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -83,6 +89,7 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
 
+
 # ✅ Static files (CSS, JS, Images)
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [
@@ -100,5 +107,22 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # ✅ CSRF trusted origins
 CSRF_TRUSTED_ORIGINS = [
     "https://79977cbb1ead.ngrok-free.app",
-    "https://bhudevkalakar-bhudevnetwork.pythonanywhere.com",
-]
+    "https://bhudevkalakar-bhudevnetwork.pythonanywhere.com",]
+
+
+ # Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/5.1/howto/static-files/
+
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']
+
+# Media files (uploads)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Media files (uploads)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+

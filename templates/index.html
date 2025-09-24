@@ -203,6 +203,8 @@
                         class="text-white font-semibold drop-shadow-lg hover:text-orange-400 transition-colors">Gallery</a>
                     <a href="{% url 'participant-profile' %}"
                         class="text-white font-semibold drop-shadow-lg hover:text-orange-400 transition-colors">Participants Profile</a>
+                    <a href="{% url 'Infopage' %}"
+                        class="text-white font-semibold drop-shadow-lg hover:text-orange-400 transition-colors">Info Page</a>
                     <a href="{% url 'contact' %}"
                         class="text-white font-semibold drop-shadow-lg hover:text-orange-400 transition-colors">Contact
                         Us</a>
@@ -229,6 +231,7 @@
                 <a href="{% url 'past-events' %}" role="menuitem" class="nav-link">Past Events</a>
                 <a href="{% url 'photos' %}" role="menuitem" class="nav-link">Gallery</a>
                 <a href="{% url 'participant-profile' %}" role="menuitem" class="nav-link">Participants Profile</a>
+                <a href="{% url 'Infopage' %}" role="menuitem" class="nav-link">Info Page</a>
                 <a href="{% url 'contact' %}" role="menuitem" class="nav-link">Contact Us</a>
                 <a href="{% url 'get-tickets' %}" role="menuitem" class="nav-link">Get Tickets</a>
             </div>
@@ -333,252 +336,145 @@
     </div>
 
     <!-- Gallery Section - Clean Modern Design -->
-        <!-- Modern Image Slider with Lightbox Popup -->
-        <section class="w-full py-16 bg-white">
-            <div class="max-w-5xl mx-auto px-4">
-                <div class="text-center mb-12">
-                    <h2 class="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent">Gallery</h2>
-                    <p class="text-lg text-gray-600 max-w-xl mx-auto">Explore our collection of memorable moments</p>
-                </div>
-                <div class="slider-container">
-                                <button class="slider-arrow slider-arrow-left" aria-label="Previous image">&#10094;</button>
-                                <div class="slider-track" id="sliderTrack">
-                                    {% for photo in photos %}
-                                    <div class="slider-image-wrapper">
-                                        <img src="{{ photo.image.url }}" alt="{{ photo.caption }}" class="slider-image" loading="lazy" data-caption="{{ photo.caption|escapejs }}">
-                                        {% if photo.caption %}
-                                        <div class="slider-caption">{{ photo.caption }}</div>
-                                        {% endif %}
-                                    </div>
-                                    {% empty %}
-                                    <div class="w-full flex items-center justify-center py-20">
-                                        <div class="text-center">
-                                            <div class="w-24 h-24 mx-auto mb-6 rounded-full bg-gray-100 flex items-center justify-center">
-                                                <i class="fas fa-camera text-3xl text-gray-400"></i>
-                                            </div>
-                                            <h3 class="text-xl font-semibold text-gray-800 mb-2">No Photos Yet</h3>
-                                            <p class="text-gray-600">Check back soon for amazing gallery content!</p>
-                                        </div>
-                                    </div>
-                                    {% endfor %}
+        <!-- Modern Masonry Grid Gallery with Modal Popup -->
+         <!-- Gallery Slider -->
+            <section class="w-full py-16 bg-white">
+                <div class="max-w-5xl mx-auto px-4">
+                    <div class="text-center mb-12">
+                        <h2 class="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent">Gallery</h2>
+                        <p class="text-lg text-gray-600 max-w-xl mx-auto">Explore our collection of memorable moments</p>
+                    </div>
+                    <div id="gallery-container" class="gallery-carousel overflow-hidden relative">
+                    {% if photos %}
+                    <div class="relative">
+                        <div id="gallerySliderTrack" class="flex transition-transform duration-500 ease-in-out" style="will-change: transform;">
+                            {% for photo in photos %}
+                            <div class="min-w-full sm:min-w-[50%] md:min-w-[33.333%] px-2 box-border">
+                                <div class="rounded-xl overflow-hidden shadow-lg bg-white hover:shadow-2xl transition-shadow duration-300 cursor-pointer group" onclick="openGalleryModal('{{ photo.image.url }}', '{{ photo.caption|escapejs }}')">
+                                    <img src="{{ photo.image.url }}" alt="{{ photo.caption }}" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                                    {% if photo.caption %}
+                                    <div class="p-3 bg-gradient-to-r from-purple-100 via-pink-100 to-blue-100 text-gray-800 text-center font-semibold text-base">{{ photo.caption }}</div>
+                                    {% endif %}
                                 </div>
-                                <button class="slider-arrow slider-arrow-right" aria-label="Next image">&#10095;</button>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <!-- Pagination Controls -->
+                        {% if paginator.num_pages > 1 %}
+                        <div class="flex justify-center mt-6">
+                            <nav class="inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                                {% if photos.has_previous %}
+                                    <a href="?page={{ photos.previous_page_number }}" class="relative inline-flex items-center px-3 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">Previous</a>
+                                {% else %}
+                                    <span class="relative inline-flex items-center px-3 py-2 rounded-l-md border border-gray-200 bg-gray-100 text-sm font-medium text-gray-400 cursor-not-allowed">Previous</span>
+                                {% endif %}
+                                {% load pagination_extras %}
+                                {% for i in paginator.num_pages|get_range %}
+                                    {% if photos.number == i %}
+                                        <span class="z-10 bg-indigo-600 border-indigo-600 text-white relative inline-flex items-center px-3 py-2 border text-sm font-medium">{{ i }}</span>
+                                    {% else %}
+                                        <a href="?page={{ i }}" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-3 py-2 border text-sm font-medium">{{ i }}</a>
+                                    {% endif %}
+                                {% endfor %}
+                                {% if photos.has_next %}
+                                    <a href="?page={{ photos.next_page_number }}" class="relative inline-flex items-center px-3 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">Next</a>
+                                {% else %}
+                                    <span class="relative inline-flex items-center px-3 py-2 rounded-r-md border border-gray-200 bg-gray-100 text-sm font-medium text-gray-400 cursor-not-allowed">Next</span>
+                                {% endif %}
+                            </nav>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% else %}
+                    <div class="w-full flex items-center justify-center py-20">
+                        <div class="text-center">
+                            <div class="w-24 h-24 mx-auto mb-6 rounded-full bg-gray-100 flex items-center justify-center">
+                                <i class="fas fa-camera text-3xl text-gray-400"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-800 mb-2">No Photos Yet</h3>
+                            <p class="text-gray-600">Check back soon for amazing gallery content!</p>
+                        </div>
+                    </div>
+                    {% endif %}
                 </div>
-            </div>
-            <!-- Lightbox Popup -->
-            <div id="lightboxModal" class="lightbox-modal">
-                <span class="lightbox-close" id="lightboxClose">&times;</span>
-                <img class="lightbox-content" id="lightboxImg" src="" alt="">
-                <div class="lightbox-caption" id="lightboxCaption"></div>
-            </div>
-            <style>
-                                .slider-container {
-                                    display: flex;
-                                    align-items: center;
-                                    justify-content: center;
-                                    position: relative;
-                                    width: 100%;
-                                    max-width: 900px;
-                                    margin: 0 auto;
-                                    overflow: visible;
-                                }
-                                .slider-track {
-                                    display: flex;
-                                    gap: 2rem;
-                                    overflow: hidden;
-                                    padding: 1rem 0.5rem;
-                                    will-change: transform;
-                                }
-                .slider-image-wrapper {
-                    flex: 0 0 240px;
-                    max-width: 240px;
-                    background: #fff;
-                    border-radius: 1.5rem;
-                    box-shadow: 0 4px 24px rgba(0,0,0,0.10);
-                    border: 1.5px solid #ececec;
-                    transition: box-shadow 0.3s, border 0.3s;
-                    cursor: pointer;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    margin-bottom: 0.5rem;
+            </section>
+        <style>
+        #gallerySliderTrack {
+            scroll-behavior: smooth;
+        }
+        @media (min-width: 640px) {
+            #gallerySliderTrack > div { min-width: 50% !important; }
+        }
+        @media (min-width: 768px) {
+            #gallerySliderTrack > div { min-width: 33.333% !important; }
+        }
+        </style>
+        <script>
+        // Gallery slider logic: infinite loop, auto-slide, modal popup
+        document.addEventListener('DOMContentLoaded', function () {
+            const track = document.getElementById('gallerySliderTrack');
+            const prevBtn = document.getElementById('galleryPrevBtn');
+            const nextBtn = document.getElementById('galleryNextBtn');
+            if (!track) return;
+            let slides = Array.from(track.children);
+            const slideCount = slides.length;
+            let current = 0;
+            let autoSlideInterval = null;
+            // Clone for infinite loop
+            function cloneSlides() {
+                if (slideCount < 2) return;
+                slides.forEach(slide => track.appendChild(slide.cloneNode(true)));
+                slides.forEach(slide => track.insertBefore(slide.cloneNode(true), track.firstChild));
+            }
+            cloneSlides();
+            slides = Array.from(track.children);
+            let visibleSlides = 1;
+            function getVisibleSlides() {
+                if (window.innerWidth >= 768) return 3;
+                if (window.innerWidth >= 640) return 2;
+                return 1;
+            }
+            function updateSlider(animate = true) {
+                visibleSlides = getVisibleSlides();
+                const slideWidth = track.offsetWidth / visibleSlides;
+                const offset = (current + slideCount) * slideWidth;
+                track.style.transition = animate ? 'transform 0.5s' : 'none';
+                track.style.transform = `translateX(-${offset}px)`;
+            }
+            function nextSlide() {
+                current++;
+                updateSlider();
+                if (current >= slideCount) {
+                    setTimeout(() => {
+                        current = 0;
+                        updateSlider(false);
+                    }, 500);
                 }
-                .slider-image-wrapper:hover {
-                    box-shadow: 0 8px 32px rgba(80,0,120,0.18);
-                    border: 1.5px solid #b983ff;
+            }
+            function prevSlide() {
+                current--;
+                updateSlider();
+                if (current < 0) {
+                    setTimeout(() => {
+                        current = slideCount - 1;
+                        updateSlider(false);
+                    }, 500);
                 }
-                .slider-image {
-                    width: 100%;
-                    height: 180px;
-                    object-fit: cover;
-                    border-radius: 1.2rem 1.2rem 0 0;
-                    transition: transform 0.35s cubic-bezier(.4,2,.6,1), box-shadow 0.3s;
-                }
-                .slider-image-wrapper:hover .slider-image {
-                    transform: scale(1.08);
-                    box-shadow: 0 8px 32px rgba(80,0,120,0.18);
-                }
-                .slider-caption {
-                    padding: 0.7rem 0.5rem 1rem 0.5rem;
-                    font-size: 1rem;
-                    color: #222;
-                    text-align: center;
-                    font-weight: 500;
-                }
-                .slider-arrow {
-                    background: #fff;
-                    border: 1.5px solid #ececec;
-                    border-radius: 50%;
-                    width: 44px;
-                    height: 44px;
-                    font-size: 2rem;
-                    color: #b983ff;
-                    box-shadow: 0 2px 8px rgba(80,0,120,0.08);
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    cursor: pointer;
-                    position: absolute;
-                    top: 50%;
-                    transform: translateY(-50%);
-                    z-index: 2;
-                    transition: background 0.2s, color 0.2s;
-                }
-                .slider-arrow:hover {
-                    background: #b983ff;
-                    color: #fff;
-                }
-                .slider-arrow-left { left: -22px; }
-                .slider-arrow-right { right: -22px; }
-                @media (max-width: 700px) {
-                    .slider-image-wrapper { flex-basis: 70vw; max-width: 70vw; }
-                    .slider-image { height: 32vw; min-height: 120px; }
-                    .slider-arrow-left { left: 0; }
-                    .slider-arrow-right { right: 0; }
-                }
-                /* Lightbox styles */
-                .lightbox-modal {
-                    display: none;
-                    position: fixed;
-                    z-index: 9999;
-                    left: 0; top: 0; width: 100vw; height: 100vh;
-                    background: rgba(0,0,0,0.92);
-                    align-items: center;
-                    justify-content: center;
-                    flex-direction: column;
-                    transition: opacity 0.3s;
-                }
-                .lightbox-modal.active { display: flex; }
-                .lightbox-content {
-                    max-width: 92vw;
-                    max-height: 70vh;
-                    border-radius: 1.2rem;
-                    box-shadow: 0 8px 32px rgba(80,0,120,0.18);
-                    background: #fff;
-                    object-fit: contain;
-                    margin-bottom: 1.2rem;
-                }
-                .lightbox-close {
-                    position: absolute;
-                    top: 32px;
-                    right: 40px;
-                    color: #fff;
-                    font-size: 2.5rem;
-                    font-weight: 700;
-                    cursor: pointer;
-                    z-index: 10001;
-                    text-shadow: 0 2px 8px #000;
-                    transition: color 0.2s;
-                }
-                .lightbox-close:hover { color: #b983ff; }
-                .lightbox-caption {
-                    color: #fff;
-                    font-size: 1.1rem;
-                    text-align: center;
-                    max-width: 90vw;
-                    padding: 0 1rem 1.5rem 1rem;
-                    text-shadow: 0 2px 8px #000;
-                }
-                @media (max-width: 600px) {
-                    .lightbox-content { max-width: 98vw; max-height: 50vh; }
-                    .lightbox-close { top: 12px; right: 16px; font-size: 2rem; }
-                }
-            </style>
-            <script>
-                                // Slider with infinite loop and animation (works with Django loop)
-                                                        document.addEventListener('DOMContentLoaded', function() {
-                                                            const sliderTrack = document.getElementById('sliderTrack');
-                                                            let sliderImages = Array.from(sliderTrack.children).filter(e => !e.classList.contains('slider-clone'));
-                                                            let slideWidth = sliderImages[0]?.offsetWidth || 240;
-                                                            let gap = 32;
-                                                            let totalWidth = 0;
-                                                            // Clone all images to make a seamless loop
-                                                            function setupContinuousLoop() {
-                                                                sliderImages = Array.from(sliderTrack.children).filter(e => !e.classList.contains('slider-clone'));
-                                                                if (sliderImages.length === 0) return;
-                                                                // Remove old clones
-                                                                sliderTrack.querySelectorAll('.slider-clone').forEach(e => e.remove());
-                                                                // Clone all images at least once for seamless loop
-                                                                sliderImages.forEach(img => {
-                                                                    let clone = img.cloneNode(true);
-                                                                    clone.classList.add('slider-clone');
-                                                                    sliderTrack.appendChild(clone);
-                                                                });
-                                                                bindLightboxEvents();
-                                                            }
-                                                            function getTotalSliderWidth() {
-                                                                sliderImages = Array.from(sliderTrack.children).filter(e => !e.classList.contains('slider-clone'));
-                                                                slideWidth = sliderImages[0]?.offsetWidth || 240;
-                                                                gap = 32;
-                                                                return sliderImages.length * (slideWidth + gap);
-                                                            }
-                                                            let pos = 0;
-                                                            function animate() {
-                                                                let visibleWidth = document.querySelector('.slider-container').offsetWidth;
-                                                                let contentWidth = getTotalSliderWidth();
-                                                                let loopWidth = contentWidth;
-                                                                pos -= 1.1; // speed
-                                                                if (-pos >= loopWidth) pos = 0;
-                                                                sliderTrack.style.transform = `translateX(${pos}px)`;
-                                                                requestAnimationFrame(animate);
-                                                            }
-                                                            window.addEventListener('resize', () => {
-                                                                setupContinuousLoop();
-                                                            });
-                                                            // Init
-                                                            setupContinuousLoop();
-                                                            animate();
-                                                        });
-                        // Lightbox logic
-                        const lightboxModal = document.getElementById('lightboxModal');
-                        const lightboxImg = document.getElementById('lightboxImg');
-                        const lightboxCaption = document.getElementById('lightboxCaption');
-                        const lightboxClose = document.getElementById('lightboxClose');
-                        function bindLightboxEvents() {
-                            document.querySelectorAll('.slider-image').forEach(img => {
-                                img.addEventListener('click', function() {
-                                    lightboxImg.src = this.src;
-                                    lightboxCaption.textContent = this.getAttribute('data-caption') || this.alt || '';
-                                    lightboxModal.classList.add('active');
-                                    document.body.style.overflow = 'hidden';
-                                });
-                            });
-                        }
-                        bindLightboxEvents();
-                        function closeLightbox() {
-                            lightboxModal.classList.remove('active');
-                            lightboxImg.src = '';
-                            lightboxCaption.textContent = '';
-                            document.body.style.overflow = '';
-                        }
-                        lightboxClose.addEventListener('click', closeLightbox);
-                        lightboxModal.addEventListener('click', function(e) {
-                            if (e.target === lightboxModal) closeLightbox();
-                        });
-                        document.addEventListener('keydown', function(e) {
-                            if (e.key === 'Escape') closeLightbox();
-                        });
-            </script>
+            }
+            function startAutoSlide() {
+                if (autoSlideInterval) clearInterval(autoSlideInterval);
+                autoSlideInterval = setInterval(nextSlide, 3500);
+            }
+            function stopAutoSlide() {
+                if (autoSlideInterval) clearInterval(autoSlideInterval);
+            }
+            nextBtn && nextBtn.addEventListener('click', () => { stopAutoSlide(); nextSlide(); startAutoSlide(); });
+            prevBtn && prevBtn.addEventListener('click', () => { stopAutoSlide(); prevSlide(); startAutoSlide(); });
+            window.addEventListener('resize', () => updateSlider(false));
+            updateSlider(false);
+            startAutoSlide();
+        });
+        </script>
         </section>
     <!-- Other Places Events Countdown Section -->
     <section class="w-full py-16" style="background: #8a8686; border-bottom: 1px solid #8a8686;">
@@ -811,6 +707,21 @@
                     return originalCards[0]?.offsetWidth || 316;
                 }
             }
+            function showGalleryCard(animate = true) {
+                galleryCardWidth = getGalleryCardWidth();
+                const totalWidth = galleryCards.length * galleryCardWidth;
+                galleryTrack.style.width = totalWidth + 'px';
+                galleryTrack.style.transition = animate ? 'transform 0.5s' : 'none';
+                galleryTrack.style.transform = `translateX(-${galleryIndex * galleryCardWidth}px)`;
+
+                // Ensure the last image is fully visible
+                if (galleryIndex >= galleryCards.length - visibleCards) {
+                    galleryTrack.style.transition = 'none';
+                    galleryIndex = originalCards.length;
+                    galleryTrack.style.transform = `translateX(-${galleryIndex * galleryCardWidth}px)`;
+                }
+            }
+
             function setupGalleryLoop() {
                 originalCards = getOriginalCards();
                 if (originalCards.length === 0) return;
@@ -824,33 +735,14 @@
                 galleryIndex = originalCards.length;
                 showGalleryCard(false);
             }
-            function showGalleryCard(animate = true) {
-                galleryCardWidth = getGalleryCardWidth();
-                if (window.innerWidth >= 640) {
-                    galleryTrack.style.width = (galleryCards.length * galleryCardWidth) + 'px';
-                } else {
-                    galleryTrack.style.width = '100vw';
-                }
-                galleryTrack.style.transition = animate ? 'transform 0.5s' : 'none';
-                galleryTrack.style.transform = `translateX(-${galleryIndex * galleryCardWidth}px)`;
-            }
-            function nextGalleryCard() {
-                galleryIndex++;
-                showGalleryCard();
-                if (galleryIndex >= galleryCards.length - visibleCards) {
-                    setTimeout(() => {
-                        galleryTrack.style.transition = 'none';
-                        galleryIndex = originalCards.length;
-                        showGalleryCard(false);
-                    }, 500);
-                }
-            }
+
             function startGallerySlider() {
                 stopGallerySlider();
                 if (galleryCards.length > visibleCards * 2) {
-                    gallerySliderInterval = setInterval(nextGalleryCard, 4000); // Slower auto-slide for smoother load
+                    gallerySliderInterval = setInterval(nextGalleryCard, 4000);
                 }
             }
+
             function stopGallerySlider() {
                 if (gallerySliderInterval) {
                     clearInterval(gallerySliderInterval);
@@ -924,7 +816,7 @@
                             <span class="text-white/80">bhudevnetwork@gmail.com</span>
                         </div>
                         <div class="flex items-center space-x-3">
-                            <i class="fas fa-phone text-white/60"></i>`
+                            <i class="fas fa-phone text-white/60"></i>
                             <span class="text-white/80">+91 9662766565</span>
                         </div>
                         <div class="flex items-center space-x-3">
@@ -939,7 +831,7 @@
             <!-- Bottom Section -->
             <div class="border-t border-white/10 pt-8 mt-8">
                 <div class="flex flex-col md:flex-row justify-between items-center">
-                    <p class="text-white/60 text-sm">
+                    <p class="text-white/60 text-sm   ">
                         © <span id="current-year"></span> Bhudev Kalakar. All rights reserved.
                     </p>
                     <div class="flex items-center space-x-1 text-white/60 text-sm mt-4 md:mt-0">
