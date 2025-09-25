@@ -22,6 +22,7 @@ class OtherPlaceEvent(models.Model):
 	event_datetime = models.DateTimeField()
 	location = models.CharField(max_length=200)
 	image = models.ImageField(upload_to='participants/', blank=True, null=True)
+	ticket_available = models.BooleanField(default=False, help_text="Is ticket available for this event?")
 
 	def save(self, *args, **kwargs):
 		super().save(*args, **kwargs)
@@ -39,6 +40,7 @@ class OtherPlaceEvent(models.Model):
 			except Exception:
 				pass
 	description = models.TextField(blank=True)
+	ticket_available = models.BooleanField(default=False, help_text="Set True if tickets are available for this event.")
 
 	def __str__(self):
 		return self.title
