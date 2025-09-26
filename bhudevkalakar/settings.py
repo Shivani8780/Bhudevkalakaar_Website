@@ -11,7 +11,7 @@ ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
     '79977cbb1ead.ngrok-free.app',
-    'bhudevkalakar-bhudevnetwork.pythonanywhere.com',
+    'bhudevkalakaar-bhudevnetwork.pythonanywhere.com',  # ✅ corrected
 ]
 
 
@@ -107,7 +107,9 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # ✅ CSRF trusted origins
 CSRF_TRUSTED_ORIGINS = [
     "https://79977cbb1ead.ngrok-free.app",
-    "https://bhudevkalakar-bhudevnetwork.pythonanywhere.com",]
+    "https://bhudevkalakaar-bhudevnetwork.pythonanywhere.com",  # ✅ corrected
+]
+
 
 
  # Static files (CSS, JavaScript, Images)
