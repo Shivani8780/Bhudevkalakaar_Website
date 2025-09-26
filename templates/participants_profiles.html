@@ -1299,6 +1299,7 @@
         }
 
         // Event listeners
+
         categoryButtons.forEach(button => {
             button.addEventListener('click', function() {
                 categoryButtons.forEach(btn => btn.classList.remove('active'));
@@ -1306,17 +1307,27 @@
                 updateCityOptions();
                 citySelect.value = 'All';
                 filterParticipants();
+                setTimeout(scrollToGrid, 100);
             });
         });
 
-        ageSelect.addEventListener('change', filterParticipants);
-        citySelect.addEventListener('change', filterParticipants);
+        ageSelect.addEventListener('change', function() {
+            filterParticipants();
+            setTimeout(scrollToGrid, 100);
+        });
+        citySelect.addEventListener('change', function() {
+            filterParticipants();
+            setTimeout(scrollToGrid, 100);
+        });
 
         // Search with debounce
         let searchTimeout;
         searchInput.addEventListener('input', function() {
             clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(filterParticipants, 300);
+            searchTimeout = setTimeout(function() {
+                filterParticipants();
+                setTimeout(scrollToGrid, 100);
+            }, 300);
         });
 
         // Initialize
