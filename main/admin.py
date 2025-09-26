@@ -1,5 +1,8 @@
 from django.contrib import admin
-from .models import OtherPlaceEvent
+from .models import OtherPlaceEvent, MainEvent
+@admin.register(MainEvent)
+class MainEventAdmin(admin.ModelAdmin):
+	list_display = ('title', 'event_datetime', 'location', 'ticket_available')
 from .models import ContactMessage, Participant
 
 @admin.register(OtherPlaceEvent)

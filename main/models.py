@@ -58,6 +58,16 @@ class HomePageImage(models.Model):
 			img_path = self.image.path
 
 # ...existing code...
+class MainEvent(models.Model):
+	title = models.CharField(max_length=200)
+	event_datetime = models.DateTimeField()
+	location = models.CharField(max_length=200, blank=True)
+	description = models.TextField(blank=True)
+	image = models.ImageField(upload_to='main_event/', blank=True, null=True)
+	ticket_available = models.BooleanField(default=False)
+
+	def __str__(self):
+		return self.title
 
 class ContactMessage(models.Model):
 	name = models.CharField(max_length=100)
@@ -168,9 +178,20 @@ class Participant(models.Model):
 	category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default='Others')
 	city = models.CharField(max_length=100, blank=True)
 
+
 	def __str__(self):
 		return self.name
 
 	def save(self, *args, **kwargs):
+		from PIL import Image
 		super().save(*args, **kwargs)
+		if self.image:
+			img_path = self.image.path
+			try:
+				img = Image.open(img_path)
+				if img.mode != 'RGB':
+					img = img.convert('RGB')
+				img.save(img_path, format='JPEG', quality=70, optimize=True)
+			except Exception:
+				pass
 
