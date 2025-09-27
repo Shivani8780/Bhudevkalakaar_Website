@@ -690,6 +690,7 @@
         // Gallery slider logic with true infinite loop and auto-slide for web/mobile view
         document.addEventListener('DOMContentLoaded', function () {
             const galleryTrack = document.querySelector('.gallery-track');
+            if (!galleryTrack) return;
             let galleryIndex = 0;
             let galleryCardWidth = 0;
             let visibleCards = 4;
@@ -707,6 +708,7 @@
             });
 
             function getOriginalCards() {
+                if (!galleryTrack) return [];
                 return Array.from(galleryTrack.querySelectorAll('.photo-card'));
             }
             function getGalleryCardWidth() {
@@ -735,7 +737,7 @@
 
             function setupGalleryLoop() {
                 originalCards = getOriginalCards();
-                if (originalCards.length === 0) return;
+                if (!galleryTrack || originalCards.length === 0) return;
                 galleryTrack.innerHTML = '';
                 let clonesBefore = originalCards.map(card => card.cloneNode(true));
                 let clonesAfter = originalCards.map(card => card.cloneNode(true));
