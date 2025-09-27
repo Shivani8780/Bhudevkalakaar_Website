@@ -1,0 +1,114 @@
+/* Custom styles */
+.animate-fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+.animate-pulse {
+    animation: pulse 2s infinite;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.7;
+    }
+}
+
+/* Background transition */
+.bg-transition {
+    transition: opacity 1s ease-in-out;
+}
+
+/* Particle animation */
+.particle {
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    animation: bounce 3s infinite;
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+/* Theme colors */
+.theme-sunset {
+    --theme-bg: rgba(124, 45, 18, 0.2);
+    --theme-accent: rgb(251, 146, 60);
+}
+
+.theme-ocean {
+    --theme-bg: rgba(30, 58, 138, 0.2);
+    --theme-accent: rgb(103, 232, 249);
+}
+
+.theme-forest {
+    --theme-bg: rgba(6, 78, 59, 0.2);
+    --theme-accent: rgb(52, 211, 153);
+}
+
+.theme-royal {
+    --theme-bg: rgba(91, 33, 182, 0.2);
+    --theme-accent: rgb(196, 181, 253);
+}
+
+.theme-rose {
+    --theme-bg: rgba(157, 23, 77, 0.2);
+    --theme-accent: rgb(249, 168, 212);
+}
+
+/* Countdown card themes */
+.countdown-card {
+    background-color: var(--theme-bg);
+}
+
+.countdown-icon {
+    color: var(--theme-accent);
+}
+
+/* Image dots */
+.image-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.image-dot.active {
+    background-color: white;
+    transform: scale(1.25);
+}
+
+@media (min-width: 640px) {
+    .image-dot {
+        width: 12px;
+        height: 12px;
+    }
+}
