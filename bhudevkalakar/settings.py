@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-rn#t@=jp5%4up41-v8h*-mmg81*m+kb06$zv9!qq^@x^#5zc^y
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '43bb82ae641a.ngrok-free.app']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '43bb82ae641a.ngrok-free.app', '79dce04ab669.ngrok-free.app']
 
 
 # Application definition
@@ -130,5 +130,6 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://43bb82ae641a.ngrok-free.app'
+    'https://43bb82ae641a.ngrok-free.app',
+    'https://79dce04ab669.ngrok-free.app'
 ]
