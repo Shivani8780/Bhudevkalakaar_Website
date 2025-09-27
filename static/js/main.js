@@ -209,6 +209,7 @@ function updateBackgroundImage() {
 // Setup animated particles
 function setupParticles() {
     const container = document.getElementById('particles');
+    if (!container) return;
     for (let i = 0; i < 30; i++) {
         const particle = document.createElement('div');
         particle.className = 'particle';
@@ -224,6 +225,7 @@ function setupParticles() {
 // Setup countdown timer
 function setupCountdown() {
     const countdownContainer = document.getElementById('countdown');
+    if (!countdownContainer) return;
     const items = [
         { label: 'Days', icon: 'fa-calendar' },
         { label: 'Hours', icon: 'fa-clock' },
@@ -259,16 +261,21 @@ function updateCountdown() {
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-        document.querySelector('[data-countdown="days"]').textContent = String(days).padStart(2, '0');
-        document.querySelector('[data-countdown="hours"]').textContent = String(hours).padStart(2, '0');
-        document.querySelector('[data-countdown="minutes"]').textContent = String(minutes).padStart(2, '0');
-        document.querySelector('[data-countdown="seconds"]').textContent = String(seconds).padStart(2, '0');
+        const daysEl = document.querySelector('[data-countdown="days"]');
+        const hoursEl = document.querySelector('[data-countdown="hours"]');
+        const minutesEl = document.querySelector('[data-countdown="minutes"]');
+        const secondsEl = document.querySelector('[data-countdown="seconds"]');
+        if (daysEl) daysEl.textContent = String(days).padStart(2, '0');
+        if (hoursEl) hoursEl.textContent = String(hours).padStart(2, '0');
+        if (minutesEl) minutesEl.textContent = String(minutes).padStart(2, '0');
+        if (secondsEl) secondsEl.textContent = String(seconds).padStart(2, '0');
     }
 }
 
 // Setup theme rotation
 function setupThemeRotation() {
     const countdown = document.getElementById('countdown');
+    if (!countdown) return;
     countdown.className += ` ${themes[0].class}`;
 
     setInterval(() => {
@@ -280,7 +287,9 @@ function setupThemeRotation() {
 // Update copyright year
 function updateCurrentYear() {
     const yearElement = document.getElementById('current-year');
-    yearElement.textContent = new Date().getFullYear();
+    if (yearElement) {
+        yearElement.textContent = new Date().getFullYear();
+    }
 }
 
 // Initialize everything when the page loads
